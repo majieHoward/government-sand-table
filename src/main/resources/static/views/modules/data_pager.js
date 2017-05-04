@@ -1,5 +1,10 @@
 define(["models/orders"],function(orders){
-
+	function handler(){
+		$$('orderData').clearAll();
+		webix.ajax().post("/order/equipmentRichselect.howard", $$("queryForm").getValues(), function (text) {
+			$$('orderData').parse(text);
+		});
+	}
 	var titlePager = {
 		view: "toolbar",
 		css: "highlighted_header header5",
@@ -11,7 +16,7 @@ define(["models/orders"],function(orders){
 			{view: "button", type: "iconButton", icon: "times", label: "清除", width: 100},
 			{view: "button", type: "iconButton", icon: "exchange", label: "调整", width: 100},
 			{view: "button", type: "iconButton", icon: "delicious", label: "剔除", width: 100},
-			{view: "button", type: "iconButton", icon: "search-plus", label: "查询", width: 100},
+			{view: "button", type: "iconButton", icon: "search-plus", label: "查询", width: 100,click:handler},
 			{view: "button", type: "iconButton", icon: "external-link", label: "导出", width: 100},
 		]
 	};
@@ -21,7 +26,6 @@ define(["models/orders"],function(orders){
 			{
 				id:"orderData",
 				view:"datatable", select:true,
-				
 				columns:[
 					{id:"id", header:"#", width:50},
 					{id:"employee", header:["客户ID", {content:"selectFilter"} ], sort:"string", minWidth:150, fillspace:1},
@@ -43,7 +47,10 @@ define(["models/orders"],function(orders){
 				export: true,
 				on: {
 					onAfterLoad: function(){
-						this.select(4);
+						if (!this.count())
+							this.showOverlay("Sorry, there is no data");
+						else
+							this.hideOverlay();
 					}
 				},
 				onClick:{
@@ -65,6 +72,27 @@ define(["models/orders"],function(orders){
 			},
 			{
 				view:"pager", id:"pagerA",
+				template:function(data, common){
+					/**data console.log(data)**/
+					//$max:2//$min:0//Ob:Object
+					//borderless:true//container:true
+					//count:12//gravity:1//group:5//height:30
+					//id:"$pager1"//limit:3//maxWidth:100000
+					//old_count:12//old_limit:3//old_page:0
+					//page:0//size:5//template:(data, common)
+					//view:"pager"//width:0
+					/**common console.log(common)**/
+					/**common  adj. 普通的; 通俗的; [数学] 公共的; 共有的**/
+					//button:anonymous(obj,common /**/)
+                    //first:()//last:()//next:()//page:(t)//pages:(t)//prev:()//template:(t,e)
+					var obtainPage=common.pages(data);
+					var start = data.page * data.size;
+					var end = start + data.size;
+					var html = " <div style='width:405px; text-align:center; line-height:20px; font-size:10pt; float:left'> "+
+                    "总计:"+data.count
+					+"行 当前:"+(start+1)+" - "+end+" </div> ";
+					return common.first()+common.prev()+obtainPage+html+common.next()+common.last();
+				},
 				size:25,
 				height: 35,
 				group:5

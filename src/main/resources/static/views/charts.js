@@ -5,56 +5,110 @@ define([
 	"views/modules/data_pager",
 	"views/modules/revenue",
 	"views/modules/taskschart",
-	"views/modules/diffchart"
-],function(dashline, visitors, orders, chart_diff, revenue, tasks, diffchart){
+	"views/modules/diffchart",
+	"views/modules/bss_orgwindows",
+],function(dashline, visitors, orders, chart_diff, revenue, tasks, diffchart,bss_orgwindows){
+	
 	function handler(){
 		$$('orderData').clearAll();
 		$$('orderData').load("/order/equipmentRichselect.howard");
 	}
+	
+	function openBssOrg(){
+		$$('win4').show();
+	}
+	
 	var layout = {
 		type: "clean",
 		rows:[
+			
 			{
 				view: "form",
+				id:"queryForm",
 				css : "title",
 				paddingX:5,
 				paddingY:5,
 				rows:[
 					{cols:[
-						{ view:"text", placeholder:"e.g.王宗伟",tooltip:'客户名称', label:"客户名称", inputAlign:"left", labelAlign:"left"},
-						{ view:"text", placeholder:"e.g.28CD21891884",tooltip:'客户编码', label:"客户编码", inputAlign:"right", labelAlign:"right"},
-						{ view:"text", placeholder:"e.g.0283349930488",tooltip:'业务号码', label:"业务号码", inputAlign:"right", labelAlign:"right"},
+						{ view:"text", 
+							id:"bssOrg",
+							name:"bssOrg",
+							placeholder:"点击选择机构",
+							readonly:true ,
+							tooltip:'机构', label:"机构", inputAlign:"left", 
+						labelAlign:"left",
+							click:openBssOrg
+						},
+						{ view:"text", 
+							placeholder:"e.g.王宗伟",
+							id:"custName",
+							name:"custName",
+							tooltip:'客户名称', label:"客户名称", inputAlign:"left", labelAlign:"left"},
+						{ view:"text", 
+								id:"custCode",
+								name:"custCode",
+								placeholder:"e.g.28CD21891884",
+								tooltip:'客户编码', label:"客户编码", inputAlign:"right", labelAlign:"right"},
+						
+						{ view:"text", 
+									id:"servAccNbr",
+									name:"servAccNbr",	
+									placeholder:"e.g.0283349930488",tooltip:'业务号码', label:"业务号码", inputAlign:"right", labelAlign:"right"}
+						
+						
+					]},
+					{cols:[
 						{ 
 							view:"richselect", yCount:2,
-							label: '客户状态',  name:"fruit1",
+							label: '客户状态',  
+							id:"custState",
+							name:"custState",
 							placeholder:"e.g.在用/注销",
 							options:[
 								{ id:1, value:"在用"   }, 
 								{ id:2, value:"注销"   }
 							]
-						}
-					]},
-					{cols:[
+						},
 						{
 							view:"template",
 							width:80,
-							template: "<div class='switch-btn'><input type='checkbox' checked='checked' class='js-switch'/> <label></label></div>", borderless: true
+							template: "<div class='switch-btn'><input type='checkbox' id='controlImportPhoneNum' class='js-switch controlImportPhoneNum'/> <label></label></div>", 
+							borderless: true,
+							onClick:{
+						        "controlImportPhoneNum":function(ev, id){
+						        	if(document.getElementById("controlImportPhoneNum").checked==true){
+						        		$$("importPhoneNum").enable();
+						        	}else{
+						        		$$("importPhoneNum").disable();
+						        	}
+						        }
+						    }
 						},{ 
-							view: "uploader", id:"upl1",
+							view: "uploader", id:"importPhoneNum",
 							autosend:false, value: '导入号码',
+							disabled:true,
 							link:"mylist" 
 						},
-						
-						
 						{
 							view:"template",
 							width:80,
-							template: "<div class='switch-btn'><input type='checkbox' checked='checked' class='js-switch'/></div>", borderless: true
+							template: "<div class='switch-btn'><input type='checkbox' id='controlImportClient' class='js-switch controlImportClient'/><label></label></div>",
+							borderless: true,
+							onClick:{
+						        "controlImportClient":function(ev, id){
+						        	if(document.getElementById("controlImportClient").checked==true){
+						        		$$("importClient").enable();
+						        	}else{
+						        		$$("importClient").disable();
+						        	}
+						        }
+						    }
 						},{ 
-							view: "uploader", id:"upl2",
+							view: "uploader", id:"importClient",
 							autosend:false, value: '导入客户ID',
+							disabled:true,
 							link:"mylist" 
-						},{},{},
+						},
 						{view: "button", type: "iconButton", icon: "search-plus", label: "查询", width: 100}
 					]}
 				]
@@ -83,6 +137,17 @@ define([
 			}
 		]
 	};
-	return { $ui:layout };
+	var controlEvent=function(id){
+		webix.message("机构ID:"+id+"机构名称:"+$$('bss_org_list').getItem(id).value);
+	}
+	function chartsbindingEvent(){
+		bss_orgwindows.demo(controlEvent);
+	}
+	chartsbindingEvent();
+	return { $ui:layout ,
+		$oninit : function(view, scope) {
+			scope.ui(bss_orgwindows.$ui);
+		}
+	};
 
 });
