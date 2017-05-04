@@ -13,8 +13,7 @@ define(function(){
 		    head:{
 				view:"toolbar", margin:-4, cols:[
 					{view:"label", label: "This window can be closed" },
-					{ view:"icon", icon:"cog", css:"alter",
-						click:"webix.message('Cog pressed')"},
+					
 					{ view:"icon", icon:"times-circle", css:"alter",
 						click:"$$('win4').hide();"}
 					]
@@ -23,6 +22,9 @@ define(function(){
 				view:"grouplist",
 				id:"bss_org_list",
 				select:false,
+				type:{
+					height:40
+				},
 				template:"<span class='info'>选择</span>&nbsp;&nbsp;#value#",
 				onClick:{
 					info:function(e, id){
