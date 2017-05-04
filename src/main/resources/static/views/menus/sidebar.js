@@ -43,6 +43,11 @@ define(function() {
 					value : "表格元素",
 					icon : "table",
 					details : "表格元素"
+				},{
+					id : "charts",
+					value : "管辖客户信息",
+					icon : "table",
+					details : "管辖客户信息"
 				}
 				]
 			} ]

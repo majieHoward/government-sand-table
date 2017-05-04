@@ -85,7 +85,7 @@ define(
 			var body = {
 				rows : [
 						{
-							height : 49,
+							height : 1,
 							id : "title",
 							css : "title",
 							template : "<div class='header'>#title#</div><div class='details'>( #details# )</div>",
