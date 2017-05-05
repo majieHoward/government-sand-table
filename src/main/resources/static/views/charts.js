@@ -179,13 +179,16 @@ define([
 //    			$$("bss_org_list").parse(param);
 //    	    }
 //    	});
-		webix.ajax("/order/equipmentRichselect.howard","parent=100",{
+		webix.ajax("/bussiness/obtainQueryBssOrgTree.howard","parent=281",{
 		    error:function(text, data, XmlHttpRequest){
 		    	webix.message({ type:"error", text:"发送失败" });
 		    },
 		    success:function(text, data, XmlHttpRequest){
-		    	
-				$$("bss_org_list").parse(text);
+		    	console.log(data);
+		    	var resultJSON=data.json();
+		    	var param={};
+		    	param.data=resultJSON.data;
+				$$("bss_org_list").parse(param);
 		    }
 		});
 		bss_orgwindows.demo(controlEvent);

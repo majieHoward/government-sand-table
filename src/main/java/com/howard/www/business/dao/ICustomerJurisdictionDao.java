@@ -6,4 +6,6 @@ import net.sf.json.JSONArray;
 
 public interface ICustomerJurisdictionDao {
 	public JSONArray obtainCustomerInformation(IDataTransferObject queryParameters) throws Exception;
+
+	public JSONArray obtainQueryBssOrgTreeItems(IDataTransferObject queryParameters) throws Exception;
 }

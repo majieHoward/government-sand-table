@@ -26,10 +26,11 @@ define(function(){
 				columns:[
 					{ id:"value", header:"机构名称", fillspace:true, 
 					  template:function(data, common){
-						  var id=data.bssOrgId;
+						  console.log(data)
+						  var id=data.id;
 						  var value=data.bssOrgName;
 						  return "<input type='checkbox' class='webix_tree_checkbox_org_select webix_tree_checkbox ' name='selectQueryOrg'"
-						  +'id="'+id+'selectQueryOrg"'+"></input>"+id+value;
+						  +'id="'+id+'selectQueryOrg"'+"></input>&nbsp;&nbsp;&nbsp;"+value;
 					  }
 					}
 					
@@ -60,7 +61,7 @@ define(function(){
 	                     */
 	                    if("true"===this.getItem(id).isParent&&-1===this.getItem(id).$count){
 	                        webix.message("Getting children of " + id);
-	                        this.loadBranch(id, null, "/order/sendThemeMessage.howard");
+	                        this.loadBranch(id, null, "/bussiness/obtainQueryBssOrgTree.howard");
 	                    }
 	                },
 	                onItemCheck:function(id){

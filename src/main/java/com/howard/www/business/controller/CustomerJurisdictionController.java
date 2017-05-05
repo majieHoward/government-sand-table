@@ -5,10 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.howard.www.business.service.ICustomerJurisdictionService;
+import com.howard.www.core.base.util.FrameworkStringUtils;
 import com.howard.www.core.base.web.controller.BaseController;
+
+import net.sf.json.JSONObject;
 
 /**
  * 
@@ -41,5 +45,10 @@ public class CustomerJurisdictionController extends BaseController {
 	public String obtainCustomerInformation() throws Exception{
 		
 		return null;
+	}
+	@RequestMapping("/bussiness/obtainQueryBssOrgTree.howard")
+	public String obtainQueryBssOrgTree()throws Exception{
+		JSONObject result=obtainICustomerJurisdictionService("customerJurisdictionService").obtainQueryBssOrgTreeItems(this.getParamOfDto());
+		return FrameworkStringUtils.asString(result);
 	}
 }
