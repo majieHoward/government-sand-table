@@ -15,6 +15,7 @@ define([
 	}
 	
 	function openBssOrg(){
+		
 		$$('win4').show();
 	}
 	
@@ -31,8 +32,16 @@ define([
 				rows:[
 					{cols:[
 						{ view:"text", 
-							id:"bssOrg",
-							name:"bssOrg",
+							id:"bssOrgId",
+							name:"bssOrgId",
+							width:1,
+							readonly:true ,
+							inputAlign:"left", 
+						    labelAlign:"left"
+						},
+						{ view:"text", 
+							id:"bssOrgName",
+							name:"bssOrgName",
 							placeholder:"点击选择机构",
 							readonly:true ,
 							tooltip:'机构', label:"机构", inputAlign:"left", 
@@ -137,16 +146,55 @@ define([
 			}
 		]
 	};
-	var controlEvent=function(id){
-		webix.message("机构ID:"+id+"机构名称:"+$$('bss_org_list').getItem(id).value);
+	var controlEvent=function(value){
+		$$('bssOrgId').setValue(value.id);
+    	$$('bssOrgId').refresh();
+		$$('bssOrgName').setValue(value.bssOrgName);
+    	$$('bssOrgName').refresh();
+		
+    	
+    	$$('win4').hide();
 	}
 	function chartsbindingEvent(){
+//		var result = webix.ajax().post("http://61.188.4.139//ims/policy_library_index_show!qryBssOrgIdTreeForMobile.action","upBssOrgId=14039329&filter=13", function (text) {
+//			console.log(text);
+//			var param={};
+//			param.data=text.output;
+//			console.log(param);
+//			$$("bss_org_list").parse(param);
+//		});
+		
+//		var result = webix.ajax().post("http://61.188.4.139//ims/policy_library_index_show!qryBssOrgIdTreeForMobile.action","upBssOrgId=14039329&filter=13", function (text) {
+//			
+//		});
+//		webix.ajax("http://61.188.4.139//ims/policy_library_index_show!qryBssOrgIdTreeForMobile.action","upBssOrgId=281&filter=13",{
+//    	    error:function(text, data, XmlHttpRequest){
+//    	    	webix.message({ type:"error", text:"发送失败" });
+//    	    },
+//    	    success:function(text, data, XmlHttpRequest){
+//    	    	console.log(data.json());
+//    			var param={};
+//    			param.data=data.json().output;
+//    			console.log(param);
+//    			$$("bss_org_list").parse(param);
+//    	    }
+//    	});
+		webix.ajax("/order/equipmentRichselect.howard","parent=100",{
+		    error:function(text, data, XmlHttpRequest){
+		    	webix.message({ type:"error", text:"发送失败" });
+		    },
+		    success:function(text, data, XmlHttpRequest){
+		    	
+				$$("bss_org_list").parse(text);
+		    }
+		});
 		bss_orgwindows.demo(controlEvent);
 	}
 	chartsbindingEvent();
 	return { $ui:layout ,
 		$oninit : function(view, scope) {
 			scope.ui(bss_orgwindows.$ui);
+			
 		}
 	};
 

@@ -54,13 +54,21 @@ public class ObtainUnprocessedOrderController extends BaseController {
 
 	@RequestMapping("/order/equipmentRichselect.howard")
 	public String equipmentRichselect(HttpServletRequest request) throws Exception {
-		return FrameworkStringUtils.asString(obtainIBusinessUserService().obtainEquipmentItems(this.getParamOfDto()));
+		String parent=request.getParameter("parent");
+		if(FrameworkStringUtils.asString(parent).equals("")){
+			parent="0";
+		}
+		return FrameworkStringUtils.asString(JSONObject.fromObject("{data:[{\"id\":\""+parent+".1\",\"bssOrgId\":\""+parent+".1\",\"bssOrgName\":\"TheShawshankRedemption\",\"isParent\":\"true\",\"webix_kids\":true},{\"id\":\""+parent+".2\",\"bssOrgId\":\""+parent+".2\",\"bssOrgName\":\"TheGodfather\",\"isParent\":\"true\",\"webix_kids\":true}]}"));
 	}
 
 	@RequestMapping("/order/sendThemeMessage.howard")
 	public String sendThemeMessage(HttpServletRequest request) throws Exception {
-		obtainIBusinessUserService().obtainSetDeviceSounds(this.getParamOfDto());
-		return FrameworkStringUtils.asString(JSONObject.fromObject("{'success':'success'}"));
+		//obtainIBusinessUserService().obtainSetDeviceSounds(this.getParamOfDto());
+		String parent=request.getParameter("parent");
+		if(FrameworkStringUtils.asString(parent).equals("")){
+			parent="0";
+		}
+		return FrameworkStringUtils.asString(JSONObject.fromObject("{parent:\""+parent+"\",data:[{\"id\":\""+parent+".1\",\"bssOrgId\":\""+parent+".1\",\"bssOrgName\":\"TheShawshankRedemption\",\"isParent\":\"true\",\"webix_kids\":true},{\"id\":\""+parent+".2\",\"bssOrgId\":\""+parent+".2\",\"bssOrgName\":\"TheGodfather\",\"isParent\":\"true\",\"webix_kids\":true}]}"));
 	}
 
 	@RequestMapping("/order/sendShutDownMessage.howard")
