@@ -105,6 +105,12 @@
 			<version>2.4</version>
 			<classifier>jdk15</classifier>
 		</dependency>
+		<!-- add by howard at 2016.01.14 -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
